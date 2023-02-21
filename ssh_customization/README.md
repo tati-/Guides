@@ -42,11 +42,13 @@ More information on SSH-agent can be found in this [post](https://smallstep.com/
 ## Customize SSH environment
 
 ### Create SSH alias
-To simplify the login to a remote server, you can define a name (alias) for the user/hostname combination, where you can also add some customization.
+To simplify the login to a remote server, you can define a name (alias) for the user/hostname combination, where you can also add some customization. To do this you need to add a **host declaration** to
+- `/etc/ssh/ssh_config ` (system level), or
+- `~/.ssh/config` (user level)
+on your local machine.
 
 #### Mac/Linux/Unix
-
-Add a **host declaration** to `~/.ssh/config` file on your local machine. You can see an example below.
+You can see an example of a host declaration below.
 
 ```
 Host <alias>
@@ -69,13 +71,20 @@ We will now explain some of the options used in the host declaration. More info 
 
 ##### SSH session timeout
 If a SSH connection goes idle for a specific amount of time (default 10 minutes), you may be confronted with a `Write failed: Broken pipe` error message. The connection might also simply be frozen, which forces you to log in again. To prevent this from happening, the option
-```sh
+```
  ServerAliveInterval 60
 ```
 allows the client to periodically (e.g. every 60 seconds) send a message to trigger a response from the remote server.
 
 ##### SSH key
 To avoid having to give your password every time you login, you can create an [ssh key pair](#establish-passwordless-ssh-connection), and add the key to your host declaration with the following line:
-```sh
+```
 IdentityFIle ~/.ssh/id_rsa_mykey
 ```
+
+##### SSH tunneling
+If the connection to the target host is not possible/permitted from the local machine, and ssh tunneling is needed (connecting to a proxy host, that then can connect to the target host), one can add the following line to the host declaration:
+```
+ProxyJump <alias of proxy server>
+```
+The proxy host declaration follows exactly the same rules, and is made in the same file (`~/.ssh/config`).
