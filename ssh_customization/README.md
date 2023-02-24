@@ -31,6 +31,11 @@ To add the key to ssh-agent:
 ```sh
 ssh-add ~/.ssh/id_rsa_mykey
 ```
+For **macOS**, to tell the OS to use this key for authentication:
+```sh
+| ssh-add --apple-use-keychain ~/.ssh/id_rsa_mykey
+```
+
 When running `ssh-add` without any parameters, your home directory will be scanned for some standard keys and those will be added to your agent. By default it looks for:
 - `~/.ssh/id_rsa`
 - `~/.ssh/id_ed25519`
